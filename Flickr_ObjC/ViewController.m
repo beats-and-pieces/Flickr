@@ -12,7 +12,7 @@
 #import "PhotoViewController.h"
 #import "NetworkHelper.h"
 
-@interface ViewController () <NetworkServiceOutputProtocol, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ViewController () <NetworkServiceOutputProtocol, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) NetworkService *networkService;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -27,12 +27,19 @@
     [super viewDidLoad];
     [self setupUISearchBar];
     [self setupUICollectionView];
+    self.navigationItem.title = @"Flickr Search";
+    
     //    [self createArrayOfPhotos];
     self.networkService = [NetworkService new];
     self.networkService.output = self;
     [self.networkService configureUrlSessionWithParams:nil];
     [self.networkService findFlickrPhotoWithSearchString:@""];
     // Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.searchBar resignFirstResponder];
 }
 - (void)createArrayOfPhotos
 {
@@ -83,11 +90,13 @@
     [self.collectionView setDataSource:self];
     [self.collectionView setDelegate:self];
     
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellIdentifier"];
     [self.collectionView registerClass:[FlickrCollectionViewCell class] forCellWithReuseIdentifier:@"FlickrCollectionViewCell"];
     [self.collectionView setBackgroundColor:[UIColor redColor]];
-    //    self.collectionView.frame = CGRectMake(0, 50, self.view.bounds.size.width, self.view.bounds.size.height - 50);
+    
     [self.view addSubview:self.collectionView];
+//    UICollectionViewFlowLayout *aFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+//    [aFlowLayout setSectionInset:UIEdgeInsetsMake(top, left, bottom, right)];
+    layout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15);
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -95,7 +104,6 @@
     if (self.photos == nil)
     {
         return 0;
-        //        return 4;
     }
     else
     {
@@ -105,11 +113,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    UICollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:indexPath];
     FlickrCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"FlickrCollectionViewCell" forIndexPath:indexPath];
     
-    cell.backgroundColor=[UIColor greenColor];
-    //    cell.imageView.image = self.photos[indexPath.row];
     [self fillCellForARow:cell indexPath:indexPath];
     return cell;
 }
@@ -147,6 +152,9 @@
                                                       updateCell.imageView.image = image;
                                               });
                                           }
+                                      } else
+                                      {
+                                          NSLog(@"couldn't get");
                                       }
                                   }];
         [task resume];
@@ -157,7 +165,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(self.view.bounds.size.width / 2 - 16, self.view.bounds.size.width / 2 - 16);
+    return CGSizeMake(self.view.bounds.size.width / 2 - 20, self.view.bounds.size.width / 2 - 16);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -173,7 +181,7 @@
     photoViewController.photoName = [self.photos[indexPath.row] valueForKey:@"title"];
     FlickrCollectionViewCell *cell = (FlickrCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
     photoViewController.image = cell.imageView.image;
-//    photoViewController.image = [UIImage imageNamed:@"placeholder.png"];
+    //    photoViewController.image = [UIImage imageNamed:@"placeholder.png"];
     
     [self.navigationController pushViewController:photoViewController animated:YES];
 }

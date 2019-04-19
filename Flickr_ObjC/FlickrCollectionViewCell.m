@@ -18,28 +18,37 @@
 
 @implementation FlickrCollectionViewCell
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.imageView = [[UIImageView alloc]init];
-        self.imageView.frame = CGRectMake(8, 8, frame.size.width - 16, frame.size.height - 30);
-        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _imageView = [[UIImageView alloc]init];
+        _imageView.frame = CGRectMake(8, 8, frame.size.width - 16, frame.size.height - 30);
+        _imageView.contentMode = UIViewContentModeScaleAspectFit;
+        _imageView.layer.masksToBounds = YES;
+        _nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - 30, frame.size.width - 16, 30)];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
+        _nameLabel.textColor = [UIColor whiteColor];
+        _nameLabel.text = @"Test";
         
-        self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - 30, frame.size.width - 16, 30)];
-        self.nameLabel.textAlignment = NSTextAlignmentCenter;
-        self.nameLabel.textColor = [UIColor whiteColor];
-        self.nameLabel.text = @"Test";
-        
+        self.backgroundColor = [UIColor greenColor];
     
-        [self addSubview:self.imageView];
-        [self addSubview:self.nameLabel];
+        [self addSubview:_imageView];
+        [self addSubview:_nameLabel];
+       
+
+
+
         
-//        self.viewForBaselineLayout.layer.masksToBounds = YES;
+        self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 8.0f;
     }
     return self;
 }
+
+
+
+
 
 @end

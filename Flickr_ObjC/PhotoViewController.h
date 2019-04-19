@@ -9,13 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "PhotoView.h"
 
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PhotoViewController : UIViewController
+@interface PhotoViewController : UIViewController <PhotoViewProtocol>
 
 @property (nonatomic, strong) PhotoView *photoView;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *photoName;
+
+@property (assign, nonatomic) double sliderOneValue;
+@property (assign, nonatomic) double sliderTwoValue;
+
+
 
 @end
 

@@ -26,7 +26,7 @@
     // Для получение деталей по фото
     // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
     // example https://farm1.staticflickr.com/2/1418878_1e92283336_m.jpg
-    return [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@.jpg", farm, server, i_d, secret];
+    return [NSString stringWithFormat:@"https://farm%@.staticflickr.com/%@/%@_%@_z.jpg", farm, server, i_d, secret];
 }
 
 @end

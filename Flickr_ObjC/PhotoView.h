@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoViewProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *nameLabel;
+
+@property (nonatomic, strong) UILabel *filterOneName;
+@property (nonatomic, strong) UILabel *filterTwoName;
+
+@property (nonatomic, strong) UISlider *filterTwoIntensitySlider;
+@property (nonatomic, strong) UISlider *filterOneIntensitySlider;
+
+@property (nonatomic, weak, nullable) id<PhotoViewProtocol> delegate;
 
 @end
 
