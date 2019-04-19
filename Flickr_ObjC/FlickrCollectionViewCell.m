@@ -37,10 +37,6 @@
         [self addSubview:_imageView];
         [self addSubview:_nameLabel];
        
-
-
-
-        
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 8.0f;
     }
