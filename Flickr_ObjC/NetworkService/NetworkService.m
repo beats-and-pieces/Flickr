@@ -81,7 +81,7 @@
 //        UIImage *downloadedImage = [UIImage imageWithData:cachedResponse.data];
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            cell.imageView.image = downloadedImage;
-//            [cell.activityIndicator stopAnimating];
+
 //        });
 //    } else {
 //        
@@ -95,7 +95,7 @@
 //                                                  FlickrCollectionViewCell *updateCell = (id)[self.collectionView cellForItemAtIndexPath:indexPath];
 //                                                  if (updateCell)
 //                                                      updateCell.imageView.image = image;
-//                                                  [cell.activityIndicator stopAnimating];
+
 //                                              });
 //                                          }
 //                                      } else
@@ -118,14 +118,8 @@
 }
 - (void)findFlickrPhotoWithSearchString:(NSString *)searchSrting
 {
-    NSString *urlString = [NetworkHelper URLForSearchString:searchSrting];
-    //    NSURLSession *session = [self createSessionForAnURLString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString: urlString]];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setTimeoutInterval:15];
-    
+    NSURLRequest *request = [self createNSURLrequestFromUrl: [NetworkHelper URLForSearchString:searchSrting]];
+
     NSURLSession *session;
     session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     
@@ -134,33 +128,11 @@
         if (!error)
         {
             NSDictionary *JSONResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-            
-            
             NSArray *photos = [[JSONResponse valueForKey:@"photos"] valueForKey:@"photo"];
-//            NSLog(@"kool %@", photos);
-            // Для получение деталей по фото
-            // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-            // example https://farm1.staticflickr.com/2/1418878_1e92283336_m.jpg
-            NSMutableArray *processedPhotos = [photos copy];
-//            NSString *urlString = [NetworkHelper URLForPhoto:processedPhotos[0]];
-//            NSLog(@"kool %@", urlString);
-//             [self downloadPhototFromUrl:urlString];
-            for (NSDictionary *currentPhoto in processedPhotos)
-            {
-                NSString *urlString = [NetworkHelper URLForPhoto:currentPhoto];
-//                NSLog(@"kool %@", urlString);
-//                [self downloadPhototFromUrl:urlString];
-                //                NSMutableDictionary *temp = [currentPhoto copy];
-                //                [temp setObject:urlString forKey:@"url"];
-                //                uiima
-                //                currentPhoto
-            }
-            photos = [processedPhotos copy];
-            //                    self.output.photos = photos;
-            [self.output loadingIsDoneWithDataRecieved:processedPhotos];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                // Отсюда отправим сообщение на обновление UI с главного потока
-            });
+            [self.output loadingIsDoneWithDataRecieved:photos];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                // Отсюда отправим сообщение на обновление UI с главного потока
+//            });
         }
         else
         {

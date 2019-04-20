@@ -11,6 +11,5 @@
 @interface PushService : NSObject
 
 - (void)sheduleLocalNotification;
-//- (UNTimeIntervalNotificationTrigger *)intervalTrigger;
 
 @end

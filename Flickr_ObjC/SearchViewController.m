@@ -15,9 +15,6 @@
 
 @interface SearchViewController () <NetworkServiceOutputProtocol, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
 
-
-
-
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *photos;
 @property (nonatomic, strong) NSString *searchString;
@@ -36,18 +33,18 @@
     self.networkService.output = self;
     [self.networkService configureUrlSessionWithParams:nil];
     [self.networkService findFlickrPhotoWithSearchString:@""];
-    // Do any additional setup after loading the view, typically from a nib.
 }
 
+#pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.searchBar resignFirstResponder];
 }
 
+#pragma mark - NetworkServiceOutputProtocol
 - (void)loadingIsDoneWithDataRecieved:(NSArray *)dataRecieved
 {
     self.photos = dataRecieved;
-//    NSLog(@"count %lu", (unsigned long)self.photos.count);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
     });
@@ -58,6 +55,7 @@
     
 }
 
+#pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -67,10 +65,9 @@
 
 - (void)sendSearchRequest
 {
-    //    self perfse
-//    NSLog(@"serach text, %@", self.searchString);
     [self.networkService findFlickrPhotoWithSearchString:self.searchString];
 }
+
 - (void)setupUISearchBar
 {
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20 + self.navigationController.navigationBar.bounds.size.height, self.view.bounds.size.width, 44)];
@@ -83,17 +80,16 @@
 {
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 64 + self.navigationController.navigationBar.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height - 64 - self.navigationController.navigationBar.bounds.size.height) collectionViewLayout:layout];
+    layout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15);
     
     [self.collectionView setDataSource:self];
     [self.collectionView setDelegate:self];
     
     [self.collectionView registerClass:[FlickrCollectionViewCell class] forCellWithReuseIdentifier:@"FlickrCollectionViewCell"];
-    [self.collectionView setBackgroundColor:[UIColor redColor]];
+    [self.collectionView setBackgroundColor:[UIColor colorWithRed: 143.0/255.0 green:174.0/255 blue:224.0/255 alpha: 1.0]];
     
     [self.view addSubview:self.collectionView];
-//    UICollectionViewFlowLayout *aFlowLayout = [[UICollectionViewFlowLayout alloc] init];
-//    [aFlowLayout setSectionInset:UIEdgeInsetsMake(top, left, bottom, right)];
-    layout.sectionInset = UIEdgeInsetsMake(15, 15, 15, 15);
+    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -111,13 +107,6 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FlickrCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FlickrCollectionViewCell" forIndexPath:indexPath];
-    
-    [self fillCellForARow:cell indexPath:indexPath];
-    return cell;
-}
-
-- (FlickrCollectionViewCell *)fillCellForARow:(FlickrCollectionViewCell *)cell indexPath:(NSIndexPath *)indexPath
-{
     cell.nameLabel.text = [self.photos[indexPath.row] valueForKey:@"title"];
     cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
     NSURLRequest *request = [self.networkService createNSURLrequestFromUrl:[NetworkHelper URLForPhoto:self.photos[indexPath.row]]];
@@ -127,8 +116,6 @@
         UIImage *downloadedImage = [UIImage imageWithData:cachedResponse.data];
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.imageView.image = downloadedImage;
-//            cell.imageView.asso
-            [cell.activityIndicator stopAnimating];
         });
     } else {
         
@@ -142,7 +129,6 @@
                                                   FlickrCollectionViewCell *updateCell = (id)[self.collectionView cellForItemAtIndexPath:indexPath];
                                                   if (updateCell)
                                                       updateCell.imageView.image = image;
-                                                  [cell.activityIndicator stopAnimating];
                                               });
                                           }
                                       } else
@@ -163,42 +149,11 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-//    NSLog(@"cell #%ld tapped", (long)indexPath.row);
-    //    collectionView.cell
-    [self openPhotoAtIndexPath:indexPath];
-}
-
-- (void)openPhotoAtIndexPath:(NSIndexPath *)indexPath
-{
     PhotoViewController *photoViewController = [[PhotoViewController alloc] init];
     photoViewController.photoName = [self.photos[indexPath.row] valueForKey:@"title"];
     FlickrCollectionViewCell *cell = (FlickrCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
     photoViewController.image = cell.imageView.image;
-    //    photoViewController.image = [UIImage imageNamed:@"placeholder.png"];
-    
     [self.navigationController pushViewController:photoViewController animated:YES];
-}
-
-
-
-#pragma mark - NSURLSessionDelegate
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
-{
-    NSData *data = [NSData dataWithContentsOfURL:location];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //        [self.output loadingIsDoneWithDataRecieved:data];
-    });
-    [session finishTasksAndInvalidate];
-}
-
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-{
-    double progress = (double)totalBytesWritten / (double)totalBytesExpectedToWrite;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //        [self.output loadingContinuesWithProgress:progress];
-    });
 }
 
 @end

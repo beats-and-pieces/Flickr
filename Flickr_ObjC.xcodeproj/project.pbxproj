@@ -14,7 +14,6 @@
 		3A51F7D42269F25400B58CF8 /* FilterService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A51F7D32269F25400B58CF8 /* FilterService.m */; };
 		3A8B9231226494EC003D910F /* FlickrCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A8B9230226494EC003D910F /* FlickrCollectionViewCell.m */; };
 		3AA9410522636A5E00D9D0EC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA9410422636A5E00D9D0EC /* AppDelegate.m */; };
-		3AA9410B22636A5E00D9D0EC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AA9410922636A5E00D9D0EC /* Main.storyboard */; };
 		3AA9410D22636A5F00D9D0EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AA9410C22636A5F00D9D0EC /* Assets.xcassets */; };
 		3AA9411022636A5F00D9D0EC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AA9410E22636A5F00D9D0EC /* LaunchScreen.storyboard */; };
 		3AA9411322636A5F00D9D0EC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA9411222636A5F00D9D0EC /* main.m */; };
@@ -39,7 +38,6 @@
 		3AA9410022636A5E00D9D0EC /* Flickr_ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flickr_ObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AA9410322636A5E00D9D0EC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3AA9410422636A5E00D9D0EC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3AA9410A22636A5E00D9D0EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3AA9410C22636A5F00D9D0EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3AA9410F22636A5F00D9D0EC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AA9411122636A5F00D9D0EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -80,6 +78,27 @@
 			name = FilterService;
 			sourceTree = "<group>";
 		};
+		3A0B7915226B890600AD1A76 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3A0B7914226B822D00AD1A76 /* FilterService */,
+				3A0B7913226B6F9700AD1A76 /* PushService */,
+				3AA9412C2263A28900D9D0EC /* NetworkService */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		3A0B7919226B8D0500AD1A76 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3A0B7910226B67EA00AD1A76 /* SearchViewController.h */,
+				3A0B7911226B680300AD1A76 /* SearchViewController.m */,
+				3A46F0142264D82D00D746EC /* PhotoViewController.h */,
+				3A46F0152264D82D00D746EC /* PhotoViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		3A8B9232226494F3003D910F /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,17 +130,11 @@
 		3AA9410222636A5E00D9D0EC /* Flickr_ObjC */ = {
 			isa = PBXGroup;
 			children = (
-				3A0B7914226B822D00AD1A76 /* FilterService */,
-				3A0B7913226B6F9700AD1A76 /* PushService */,
-				3AA9412C2263A28900D9D0EC /* NetworkService */,
+				3A0B7915226B890600AD1A76 /* Services */,
 				3AA9410322636A5E00D9D0EC /* AppDelegate.h */,
 				3AA9410422636A5E00D9D0EC /* AppDelegate.m */,
-				3A0B7910226B67EA00AD1A76 /* SearchViewController.h */,
-				3A0B7911226B680300AD1A76 /* SearchViewController.m */,
-				3A46F0142264D82D00D746EC /* PhotoViewController.h */,
-				3A46F0152264D82D00D746EC /* PhotoViewController.m */,
+				3A0B7919226B8D0500AD1A76 /* Controller */,
 				3A8B9232226494F3003D910F /* View */,
-				3AA9410922636A5E00D9D0EC /* Main.storyboard */,
 				3AA9410C22636A5F00D9D0EC /* Assets.xcassets */,
 				3AA9410E22636A5F00D9D0EC /* LaunchScreen.storyboard */,
 				3AA9411122636A5F00D9D0EC /* Info.plist */,
@@ -201,7 +214,6 @@
 			files = (
 				3AA9411022636A5F00D9D0EC /* LaunchScreen.storyboard in Resources */,
 				3AA9410D22636A5F00D9D0EC /* Assets.xcassets in Resources */,
-				3AA9410B22636A5E00D9D0EC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,14 +240,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		3AA9410922636A5E00D9D0EC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3AA9410A22636A5E00D9D0EC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3AA9410E22636A5F00D9D0EC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

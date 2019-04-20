@@ -15,6 +15,7 @@
 @interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 @property (strong, nonatomic) SearchViewController *searchViewController;
+@property (strong, nonatomic) UINavigationController *navigationController;
 @end
 
 @implementation AppDelegate
@@ -26,11 +27,13 @@
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     SearchViewController *searchViewController = [[SearchViewController alloc] init];
     self.searchViewController = searchViewController;
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
     self.window.rootViewController = navigationController;
+    self.navigationController = navigationController;
+    [self.window makeKeyAndVisible];
     
     self.window.backgroundColor = [UIColor whiteColor];
-    //    [self.window makeKeyAndVisible];
     
     // Set app-wide shared cache (first number is megabyte value)
     NSUInteger cacheSizeMemory = 500*1024*1024; // 500 MB
@@ -74,6 +77,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
     {
         NSString *request = content.userInfo[@"request"];
         self.searchViewController.searchBar.text = request;
+        [self.navigationController popViewControllerAnimated:YES];
         [self.searchViewController.networkService findFlickrPhotoWithSearchString:request];
     }
     

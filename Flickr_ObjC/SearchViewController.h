@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "NetworkService/NetworkService.h"
 
-@interface SearchViewController : UIViewController <NSURLSessionDelegate, NSURLSessionDownloadDelegate>
+@interface SearchViewController : UIViewController <NSURLSessionDelegate>
 
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NetworkService *networkService;

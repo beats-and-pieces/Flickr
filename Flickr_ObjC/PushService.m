@@ -17,26 +17,13 @@
 static const NSString *identifierForActions = @"LCTReminderCategory";
 
 typedef NS_ENUM(NSInteger, LCTTriggerType) {
-    LCTTriggerTypeInterval = 0,
-    LCTTriggerTypeDate = 1,
-    LCTTriggerTypeLocation = 2,
+    LCTTriggerTypeInterval = 0
 };
-
 
 @implementation PushService
 - (void)sheduleLocalNotification
 {
-    /* Контент - сущность класса UNMutableNotificationContent
-     Содержит в себе:
-     title: Заголовок, обычно с основной причиной показа пуша
-     subtitle: Подзаговолок, не обязателен
-     body: Тело пуша
-     badge: Номер бейджа для указания на иконке приложения
-     sound: Звук, с которым покажется push при доставке. Можно использовать default или установить свой из файла.
-     launchImageName: имя изображения, которое стоит показать, если приложение запущено по тапу на notification.
-     userInfo: Кастомный словарь с данными
-     attachments: Массив UNNotificationAttachment. Используется для включения аудио, видео или графического контента.
-     */
+   
     UNMutableNotificationContent *content = [UNMutableNotificationContent new];
     
     NSArray *requests = @[@"puppies", @"kittens"];
@@ -55,22 +42,6 @@ typedef NS_ENUM(NSInteger, LCTTriggerType) {
                            @"request": requests[randomNumber]
                            };
     content.userInfo = dict;
-    
-    content.badge = @(0);
-    
-    
-    
-    //  Добавляем кастомный attachement
-    UNNotificationAttachment *attachment = [self imageAttachment];
-    if (attachment)
-    {
-        content.attachments = @[attachment];
-    }
-    
-  
-    
-    // Добавляем кастомную категорию
-    content.categoryIdentifier = identifierForActions;
     
     // Смотрим разные варианты триггеров
     UNNotificationTrigger *whateverTrigger = [self triggerWithType:LCTTriggerTypeInterval];
@@ -100,10 +71,6 @@ typedef NS_ENUM(NSInteger, LCTTriggerType) {
     {
         case LCTTriggerTypeInterval:
             return [self intervalTrigger];
-        case LCTTriggerTypeLocation:
-            return [self locationTrigger];
-        case LCTTriggerTypeDate:
-            return [self dateTrigger];
         default:
             break;
     }
@@ -113,67 +80,6 @@ typedef NS_ENUM(NSInteger, LCTTriggerType) {
 - (UNTimeIntervalNotificationTrigger *)intervalTrigger
 {
     return [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
-}
-
-- (UNCalendarNotificationTrigger *)dateTrigger
-{
-    /* Если мы хотим сделать повторяющийся пуш каждый день в одно время, в dateComponents
-     должны быть только часы/минуты/секунды */
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:3600];
-    NSDateComponents *triggerDate = [[NSCalendar currentCalendar]
-                                     components:NSCalendarUnitYear +
-                                     NSCalendarUnitMonth + NSCalendarUnitDay +
-                                     NSCalendarUnitHour + NSCalendarUnitMinute +
-                                     NSCalendarUnitSecond fromDate:date];
-    
-    return [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:triggerDate repeats:NO];
-}
-
-- (UNLocationNotificationTrigger *)locationTrigger
-{
-    /*
-     // Создаем или получаем CLRegion и заводим триггер
-     return [UNLocationNotificationTrigger triggerWithRegion:region repeats:NO];
-     */
-    return nil;
-}
-
-
-#pragma mark - ContentType
-
-- (NSInteger)giveNewBadgeNumber
-{
-    return [UIApplication sharedApplication].applicationIconBadgeNumber;
-}
-
-- (UNNotificationAttachment *)imageAttachment
-{
-    // Загружаем, нельзя использовать asserts
-    NSURL *fileURL = [[NSBundle mainBundle] URLForResource:@"sberCat" withExtension:@"png"];
-    NSError *error;
-    UNNotificationAttachment *attachment = [UNNotificationAttachment attachmentWithIdentifier:@"pushImage" URL:fileURL options:nil error:&error];
-    
-    return attachment;
-}
-
-
-#pragma mark - Categories
-
-- (void)addCustomActions
-{
-    // Создаем кастомные action'ы
-    UNNotificationAction *checkAction = [UNNotificationAction actionWithIdentifier:@"CheckID"
-                                                                             title:@"Чо кого" options:UNNotificationActionOptionNone];
-    UNNotificationAction *deleteAction = [UNNotificationAction actionWithIdentifier:@"DeleteID"
-                                                                              title:@"Удалить" options:UNNotificationActionOptionDestructive];
-    
-    // Создаем кастомную категорию
-    UNNotificationCategory *category = [UNNotificationCategory categoryWithIdentifier:identifierForActions actions:@[checkAction,deleteAction] intentIdentifiers:@[] options:UNNotificationCategoryOptionNone];
-    NSSet *categories = [NSSet setWithObject:category];
-    
-    // Устанавливаем ее для notificationCenter
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center setNotificationCategories:categories];
 }
 
 @end
