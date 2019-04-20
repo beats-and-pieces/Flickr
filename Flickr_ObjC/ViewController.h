@@ -10,6 +10,7 @@
 
 @interface ViewController : UIViewController <NSURLSessionDelegate, NSURLSessionDownloadDelegate>
 
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 

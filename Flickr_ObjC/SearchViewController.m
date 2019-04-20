@@ -1,28 +1,29 @@
 //
-//  ViewController.m
+//  SearchViewController.m
 //  Flickr_ObjC
 //
 //  Created by Anton Kuznetsov on 14/04/2019.
 //  Copyright © 2019 Anton Kuznetsov. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "NetworkService.h"
+#import "SearchViewController.h"
+//#import "NetworkService.h"
 #import "FlickrCollectionViewCell.h"
 #import "PhotoViewController.h"
 #import "NetworkHelper.h"
 #import "PushService.h"
 
-@interface ViewController () <NetworkServiceOutputProtocol, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
+@interface SearchViewController () <NetworkServiceOutputProtocol, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
 
-@property (nonatomic, strong) NetworkService *networkService;
+
+
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *photos;
 @property (nonatomic, strong) NSString *searchString;
 
 @end
-@implementation ViewController
+@implementation SearchViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
