@@ -130,11 +130,11 @@
 		3AA9410222636A5E00D9D0EC /* Flickr_ObjC */ = {
 			isa = PBXGroup;
 			children = (
+				3A8B9232226494F3003D910F /* View */,
+				3A0B7919226B8D0500AD1A76 /* Controller */,
 				3A0B7915226B890600AD1A76 /* Services */,
 				3AA9410322636A5E00D9D0EC /* AppDelegate.h */,
 				3AA9410422636A5E00D9D0EC /* AppDelegate.m */,
-				3A0B7919226B8D0500AD1A76 /* Controller */,
-				3A8B9232226494F3003D910F /* View */,
 				3AA9410C22636A5F00D9D0EC /* Assets.xcassets */,
 				3AA9410E22636A5F00D9D0EC /* LaunchScreen.storyboard */,
 				3AA9411122636A5F00D9D0EC /* Info.plist */,

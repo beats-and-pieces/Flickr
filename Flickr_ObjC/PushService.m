@@ -33,7 +33,6 @@ typedef NS_ENUM(NSInteger, LCTTriggerType) {
                                  requests[1] : @"Вы давно не смотрели котят"
                                  };
     content.title = @"Напоминание!";
-//    content.body = @"Вы давно не смотрели собачек";
     int randomNumber = arc4random_uniform(2);
     NSLog(@"random %d", randomNumber);
     content.body = bodies[requests[randomNumber]];
