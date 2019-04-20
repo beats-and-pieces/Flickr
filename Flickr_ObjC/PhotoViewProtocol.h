@@ -14,7 +14,6 @@
 @property (assign, nonatomic) double sliderOneValue;
 @property (assign, nonatomic) double sliderTwoValue;
 
-- (void)applyFilterOneIntensity;
-- (void)applyFilterTwoIntensity;
+- (void)applyFilters;
 
 @end

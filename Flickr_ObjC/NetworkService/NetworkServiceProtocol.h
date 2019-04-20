@@ -11,6 +11,7 @@
 
 - (void)loadingContinuesWithProgress:(double)progress;
 - (void)loadingIsDoneWithDataRecieved:(NSArray *)dataRecieved;
+- (void)imageIsLoadedForUrl:(NSString *)url withDataReceived:(NSData *)dataReceived;
 
 @end
 
@@ -25,6 +26,7 @@
 - (void)suspendNetworkLoading;
 
 - (void)findFlickrPhotoWithSearchString:(NSString *)searcSrting;
+- (NSURLRequest *)createNSURLrequestFromUrl:(NSString *)urlString;
 
 @end
 

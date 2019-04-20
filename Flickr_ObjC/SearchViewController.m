@@ -29,12 +29,9 @@
     [super viewDidLoad];
     [self setupUISearchBar];
     [self setupUICollectionView];
-//    PushService *pushService = [PushService new];
-//    [pushService sheduleLocalNotification];
-//    pushService
+
     self.navigationItem.title = @"Flickr Search";
     
-    //    [self createArrayOfPhotos];
     self.networkService = [NetworkService new];
     self.networkService.output = self;
     [self.networkService configureUrlSessionWithParams:nil];
@@ -46,26 +43,21 @@
 {
     [self.searchBar resignFirstResponder];
 }
-- (void)createArrayOfPhotos
-{
-    NSMutableArray *array = [NSMutableArray new];
-    for (int i = 1; i <= 7; i++)
-    {
-        //        NSString *fileName = [NSString stringWithFormat:@"%d",i];
-        NSString *filePath= [NSString stringWithFormat:@"%ld", (long)i];
-        UIImage *image = [UIImage imageNamed:filePath];
-        [array addObject:image];
-    }
-    self.photos = array;
-}
+
 - (void)loadingIsDoneWithDataRecieved:(NSArray *)dataRecieved
 {
     self.photos = dataRecieved;
-    NSLog(@"count %lu", (unsigned long)self.photos.count);
+//    NSLog(@"count %lu", (unsigned long)self.photos.count);
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
     });
 }
+
+- (void)imageIsLoadedForUrl:(NSString *)url withDataReceived:(NSData *)dataReceived
+{
+    
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -76,7 +68,7 @@
 - (void)sendSearchRequest
 {
     //    self perfse
-    NSLog(@"serach text, %@", self.searchString);
+//    NSLog(@"serach text, %@", self.searchString);
     [self.networkService findFlickrPhotoWithSearchString:self.searchString];
 }
 - (void)setupUISearchBar
@@ -118,30 +110,25 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    FlickrCollectionViewCell *cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"FlickrCollectionViewCell" forIndexPath:indexPath];
+    FlickrCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FlickrCollectionViewCell" forIndexPath:indexPath];
     
     [self fillCellForARow:cell indexPath:indexPath];
     return cell;
 }
+
 - (FlickrCollectionViewCell *)fillCellForARow:(FlickrCollectionViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
     cell.nameLabel.text = [self.photos[indexPath.row] valueForKey:@"title"];
-    
-    NSString *urlString = [NetworkHelper URLForPhoto:self.photos[indexPath.row]];
     cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
-    
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString: urlString]];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setTimeoutInterval:15];
-    
+    NSURLRequest *request = [self.networkService createNSURLrequestFromUrl:[NetworkHelper URLForPhoto:self.photos[indexPath.row]]];
+
     NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
     if (cachedResponse.data) {
         UIImage *downloadedImage = [UIImage imageWithData:cachedResponse.data];
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.imageView.image = downloadedImage;
+//            cell.imageView.asso
+            [cell.activityIndicator stopAnimating];
         });
     } else {
         
@@ -155,6 +142,7 @@
                                                   FlickrCollectionViewCell *updateCell = (id)[self.collectionView cellForItemAtIndexPath:indexPath];
                                                   if (updateCell)
                                                       updateCell.imageView.image = image;
+                                                  [cell.activityIndicator stopAnimating];
                                               });
                                           }
                                       } else
@@ -170,12 +158,12 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(self.view.bounds.size.width / 2 - 20, self.view.bounds.size.width / 2 - 16);
+    return CGSizeMake((self.view.bounds.size.width - 3 * 15 ) / 2, (self.view.bounds.size.width - 3 * 15 ) / 2);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath;
 {
-    NSLog(@"cell #%ld tapped", (long)indexPath.row);
+//    NSLog(@"cell #%ld tapped", (long)indexPath.row);
     //    collectionView.cell
     [self openPhotoAtIndexPath:indexPath];
 }
@@ -190,6 +178,8 @@
     
     [self.navigationController pushViewController:photoViewController animated:YES];
 }
+
+
 
 #pragma mark - NSURLSessionDelegate
 

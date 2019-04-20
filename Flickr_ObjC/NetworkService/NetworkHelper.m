@@ -13,7 +13,7 @@
 + (NSString *)URLForSearchString:(NSString *)searchString
 {
     NSString *APIKey = @"fa328b6dbd6c76dd306ea51360e2a548";
-    return [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&per_page=25&format=json&nojsoncallback=1", APIKey, searchString];
+    return [NSString stringWithFormat:@"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%@&tags=%@&per_page=100&format=json&nojsoncallback=1", APIKey, searchString];
 }
 
 + (NSString *)URLForPhoto:(NSDictionary *)photo

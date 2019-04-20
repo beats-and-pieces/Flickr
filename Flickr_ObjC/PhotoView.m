@@ -31,15 +31,15 @@
         self.nameLabel.textColor = [UIColor blueColor];
         self.nameLabel.text = @"Test";
         
-        self.filterOneName = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - elementHeight * 2, frame.size.width - 16, elementHeight)];
+        self.filterOneName = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - elementHeight * 6, frame.size.width - 16, elementHeight)];
         self.filterOneName.textAlignment = NSTextAlignmentCenter;
         self.filterOneName.textColor = [UIColor blueColor];
-        self.filterOneName.text = @"Blur";
+        self.filterOneName.text = @"Sepia Filter Intensity";
         
-        self.filterTwoName = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - elementHeight * 3, frame.size.width - 16, elementHeight * 2)];
+        self.filterTwoName = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - elementHeight * 4, frame.size.width - 16, elementHeight * 2)];
         self.filterTwoName.textAlignment = NSTextAlignmentCenter;
         self.filterTwoName.textColor = [UIColor blueColor];
-        self.filterTwoName.text = @"Sepia";
+        self.filterTwoName.text = @"Bloom Filter Intensity";
         
         
         self.filterOneIntensitySlider = [[UISlider alloc] initWithFrame:CGRectMake(sliderLeftRightOffset, frame.size.height - elementHeight * 2, self.bounds.size.width - sliderLeftRightOffset * 2, elementHeight)];
@@ -54,17 +54,13 @@
         
         self.filterOneIntensitySlider.value = 0.0;
 
-        
         [self addSubview:self.imageView];
 
         [self addSubview:self.filterOneName];
         [self addSubview:self.filterTwoName];
         [self addSubview:self.filterOneIntensitySlider];
         [self addSubview:self.filterTwoIntensitySlider];
-        
-        
-        //        self.viewForBaselineLayout.layer.masksToBounds = YES;
-        //        self.viewForBaselineLayout.layer.cornerRadius = 8.0f;
+
     }
     return self;
 }
@@ -74,8 +70,8 @@
     UISlider *slider = (UISlider*)sender;
     float value = slider.value;
     self.delegate.sliderOneValue = value;
-    [self.delegate applyFilterOneIntensity];
-    NSLog(@"%f", value);
+    [self.delegate applyFilters];
+//    NSLog(@"%f", value);
 }
 
 -(void)sliderTwoAction:(id)sender
@@ -83,8 +79,8 @@
     UISlider *slider = (UISlider*)sender;
     float value = slider.value;
     self.delegate.sliderTwoValue = value;
-    [self.delegate applyFilterTwoIntensity];
-    NSLog(@"%f", value);
+    [self.delegate applyFilters];
+//    NSLog(@"%f", value);
 }
 
 @end

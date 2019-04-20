@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 

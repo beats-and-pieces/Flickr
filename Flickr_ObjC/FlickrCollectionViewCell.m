@@ -25,6 +25,9 @@
         
         _imageView = [[UIImageView alloc]init];
         _imageView.frame = CGRectMake(8, 8, frame.size.width - 16, frame.size.height - 30);
+        _activityIndicator.frame = CGRectMake(8, 8, frame.size.width - 16, frame.size.height - 30);
+        [_activityIndicator startAnimating];
+        
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
         _imageView.layer.masksToBounds = YES;
         _nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, frame.size.height - 30, frame.size.width - 16, 30)];
@@ -36,6 +39,8 @@
     
         [self addSubview:_imageView];
         [self addSubview:_nameLabel];
+        [self bringSubviewToFront:_activityIndicator];
+        
        
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 8.0f;

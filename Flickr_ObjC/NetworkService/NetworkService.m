@@ -66,47 +66,56 @@
     session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     return session;
 }
-- (void)downloadPhototFromUrl:(NSString *)urlString
+
+
+//- (void)getImageForAPhotoWithUrl:(NSString *)urlString
+//{
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//    [request setURL:[NSURL URLWithString: urlString]];
+//    [request setHTTPMethod:@"GET"];
+//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//    [request setTimeoutInterval:15];
+//    
+//    NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
+//    if (cachedResponse.data) {
+//        UIImage *downloadedImage = [UIImage imageWithData:cachedResponse.data];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            cell.imageView.image = downloadedImage;
+//            [cell.activityIndicator stopAnimating];
+//        });
+//    } else {
+//        
+//        NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+//                                  
+//                                  {
+//                                      if (data) {
+//                                          UIImage *image = [UIImage imageWithData:data];
+//                                          if (image) {
+//                                              dispatch_async(dispatch_get_main_queue(), ^{
+//                                                  FlickrCollectionViewCell *updateCell = (id)[self.collectionView cellForItemAtIndexPath:indexPath];
+//                                                  if (updateCell)
+//                                                      updateCell.imageView.image = image;
+//                                                  [cell.activityIndicator stopAnimating];
+//                                              });
+//                                          }
+//                                      } else
+//                                      {
+//                                          NSLog(@"couldn't get");
+//                                      }
+//                                  }];
+//        [task resume];
+//    }
+//}
+
+- (NSURLRequest *)createNSURLrequestFromUrl:(NSString *)urlString
 {
-    //    NSString *urlString = [NetworkHelper URLForSearchString:searchSrting];
-    //    NSURLSession *session = [self createSessionForAnURLString:urlString];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString: urlString]];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setTimeoutInterval:15];
-    
-    NSURLSession *session;
-    session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    NSURLSessionDataTask *sessionDataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        if (!error)
-        {
-            UIImage *image = [UIImage imageWithData:data];
-            
-        }
-        else
-        {
-            NSLog(@"Error occured!");
-        }
-    }];
-//    [sessionDataTask resume];
-    
-    
-//    NSString *strImgURLAsString = @"imageURL";
-//    [strImgURLAsString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *imgURL = [NSURL URLWithString:urlString];
-    [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:imgURL] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (!connectionError) {
-            UIImage *img = [[UIImage alloc] initWithData:data];
-            // pass the img to your imageview
-        }else{
-            NSLog(@"%@",connectionError);
-        }
-    }];
+    return request;
 }
-
 - (void)findFlickrPhotoWithSearchString:(NSString *)searchSrting
 {
     NSString *urlString = [NetworkHelper URLForSearchString:searchSrting];
@@ -128,7 +137,7 @@
             
             
             NSArray *photos = [[JSONResponse valueForKey:@"photos"] valueForKey:@"photo"];
-            NSLog(@"kool %@", photos);
+//            NSLog(@"kool %@", photos);
             // Для получение деталей по фото
             // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
             // example https://farm1.staticflickr.com/2/1418878_1e92283336_m.jpg
@@ -139,7 +148,7 @@
             for (NSDictionary *currentPhoto in processedPhotos)
             {
                 NSString *urlString = [NetworkHelper URLForPhoto:currentPhoto];
-                NSLog(@"kool %@", urlString);
+//                NSLog(@"kool %@", urlString);
 //                [self downloadPhototFromUrl:urlString];
                 //                NSMutableDictionary *temp = [currentPhoto copy];
                 //                [temp setObject:urlString forKey:@"url"];

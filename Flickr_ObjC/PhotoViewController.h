@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) PhotoView *photoView;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, strong) UIImage *editedImage;
 @property (nonatomic, strong) NSString *photoName;
 
 @property (assign, nonatomic) double sliderOneValue;

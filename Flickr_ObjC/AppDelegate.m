@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "ViewController.h"
 #import "SearchViewController.h"
 @import UserNotifications;
 #import "PushService.h"
