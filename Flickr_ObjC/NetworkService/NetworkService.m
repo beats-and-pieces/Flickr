@@ -9,8 +9,6 @@
 #import "NetworkService.h"
 #import "NetworkHelper.h"
 #import<UIKit/UIKit.h>
-//#import <UI
-
 
 @interface NetworkService ()
 
@@ -26,18 +24,16 @@
 {
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
     
-    // Настравиваем Session Configuration
     [sessionConfiguration setAllowsCellularAccess:YES];
     if (params)
     {
-        [sessionConfiguration setHTTPAdditionalHeaders:params];//@{ @"Accept" : @"application/json" }];
+        [sessionConfiguration setHTTPAdditionalHeaders:params];
     }
     else
     {
         [sessionConfiguration setHTTPAdditionalHeaders:@{ @"Accept" : @"application/json" }];
     }
     
-    // Создаем сессию
     self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];
 }
 
@@ -49,7 +45,7 @@
         self.urlSession = [NSURLSession sessionWithConfiguration:sessionConfiguration delegate:self delegateQueue:nil];
     }
     self.downloadTask = [self.urlSession downloadTaskWithURL:[NSURL URLWithString:@"https://upload.wikimedia.org/wikipedia/commons/4/4e/Pleiades_large.jpg"]];
-    /* http://is1.mzstatic.com/image/thumb/Purple2/v4/91/59/e1/9159e1b3-f67c-6c05-0324-d56f4aee156a/source/100x100bb.jpg */
+
     [self.downloadTask resume];
 }
 
@@ -66,46 +62,6 @@
     session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     return session;
 }
-
-
-//- (void)getImageForAPhotoWithUrl:(NSString *)urlString
-//{
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    [request setURL:[NSURL URLWithString: urlString]];
-//    [request setHTTPMethod:@"GET"];
-//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//    [request setTimeoutInterval:15];
-//    
-//    NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
-//    if (cachedResponse.data) {
-//        UIImage *downloadedImage = [UIImage imageWithData:cachedResponse.data];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            cell.imageView.image = downloadedImage;
-
-//        });
-//    } else {
-//        
-//        NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
-//                                  
-//                                  {
-//                                      if (data) {
-//                                          UIImage *image = [UIImage imageWithData:data];
-//                                          if (image) {
-//                                              dispatch_async(dispatch_get_main_queue(), ^{
-//                                                  FlickrCollectionViewCell *updateCell = (id)[self.collectionView cellForItemAtIndexPath:indexPath];
-//                                                  if (updateCell)
-//                                                      updateCell.imageView.image = image;
-
-//                                              });
-//                                          }
-//                                      } else
-//                                      {
-//                                          NSLog(@"couldn't get");
-//                                      }
-//                                  }];
-//        [task resume];
-//    }
-//}
 
 - (NSURLRequest *)createNSURLrequestFromUrl:(NSString *)urlString
 {
@@ -130,9 +86,6 @@
             NSDictionary *JSONResponse = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSArray *photos = [[JSONResponse valueForKey:@"photos"] valueForKey:@"photo"];
             [self.output loadingIsDoneWithDataRecieved:photos];
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                // Отсюда отправим сообщение на обновление UI с главного потока
-//            });
         }
         else
         {
@@ -146,11 +99,6 @@
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location
 {
-    //    NSData *data = [NSData dataWithContentsOfURL:location];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //        [self.output loadingIsDoneWithDataRecieved:data];
-    });
     [session finishTasksAndInvalidate];
 }
 

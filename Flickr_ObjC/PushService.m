@@ -42,11 +42,8 @@ typedef NS_ENUM(NSInteger, LCTTriggerType) {
                            };
     content.userInfo = dict;
     
-    // Смотрим разные варианты триггеров
     UNNotificationTrigger *whateverTrigger = [self triggerWithType:LCTTriggerTypeInterval];
     
-    // Создаем запрос на выполнение
-    // Objective-C
     NSString *identifier = @"NotificationId";
     UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
                                                                           content:content trigger:whateverTrigger];

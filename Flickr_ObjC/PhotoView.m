@@ -71,7 +71,6 @@
     float value = slider.value;
     self.delegate.sliderOneValue = value;
     [self.delegate applyFilters];
-//    NSLog(@"%f", value);
 }
 
 -(void)sliderTwoAction:(id)sender
@@ -80,7 +79,6 @@
     float value = slider.value;
     self.delegate.sliderTwoValue = value;
     [self.delegate applyFilters];
-//    NSLog(@"%f", value);
 }
 
 @end

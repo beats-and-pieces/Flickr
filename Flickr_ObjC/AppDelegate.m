@@ -22,7 +22,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+
     
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     SearchViewController *searchViewController = [[SearchViewController alloc] init];
@@ -35,22 +35,17 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     
-    // Set app-wide shared cache (first number is megabyte value)
     NSUInteger cacheSizeMemory = 500*1024*1024; // 500 MB
     NSUInteger cacheSizeDisk = 500*1024*1024; // 500 MB
     NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:cacheSizeMemory diskCapacity:cacheSizeDisk diskPath:@"nsurlcache"];
     [NSURLCache setSharedURLCache:sharedCache];
-    //    sleep(1); // Critically important line, sadly, but it's worth it!
     
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     
-    // Устанавливаем делегат
     center.delegate = self;
     
-    // Указываем тип пушей для работы
     UNAuthorizationOptions options = UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge;
     
-    // Запрашиваем доступ на работу с пушами
     [center requestAuthorizationWithOptions:options
                           completionHandler:^(BOOL granted, NSError * _Nullable error) {
                               if (!granted)

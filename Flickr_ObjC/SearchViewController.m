@@ -7,7 +7,6 @@
 //
 
 #import "SearchViewController.h"
-//#import "NetworkService.h"
 #import "FlickrCollectionViewCell.h"
 #import "PhotoViewController.h"
 #import "NetworkHelper.h"

@@ -21,7 +21,6 @@
 - (void)configureUrlSessionWithParams:(NSDictionary *)params;
 - (void)startImageLoading;
 
-// Next Step
 - (BOOL)resumeNetworkLoading;
 - (void)suspendNetworkLoading;
 
